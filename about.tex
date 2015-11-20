@@ -1,0 +1,124 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage{fontspec}
+\usepackage{tikz}
+\usepackage{tikz-uml}
+\setmainfont{SimSun}
+
+\begin{document}
+
+%%\center{注册流程}
+\begin{center}
+  注册流程
+ \end{center}
+\newline
+
+\begin{tikzpicture}
+\begin{umlseqdiag}
+\umlactor[class=Customer] {a}
+\umlobject[class=Tongle] {b}
+\umlobject[class=NewEBank]{c}
+%%\umlobject[class= Xingye Bank]{d}
+\begin{umlcall}[op={Apply()}, dt=5] {a}{b}
+\begin{umlcall}[op={Register()}, return={Return()}, dt=2] {b}{c}
+\end{umlcall}
+\begin{umlcall}[op={Result()}] {b}{a}
+\end{umlcall}
+\end{umlcall}
+
+\end{umlseqdiag}
+\end{tikzpicture}
+
+
+\newline
+\vspace{50pt}
+
+\begin{center}
+订单、支付流程
+\end{center}
+\newline
+\begin{tikzpicture}
+\begin{umlseqdiag}
+\umlactor[class=Customer] {a}
+\umlobject[class=Tongle] {b}
+\umlobject[class=NewEBank]{c}
+\umlobject[class= Xingye Bank]{d}
+
+%%\begin{umlfragment}
+\begin{umlcall}[op={Order()}, dt=7]{a}{b}
+\end{umlcall}
+
+\begin{umlcall} [op={Pay()}, dt=5] {a}{c}
+\begin{umlcall} [op={PayProcess()}, return={Return()}, dt=2] {c}{d}
+\end{umlcall}
+\begin{umlcall} [op={Result()}, type=return]  {c}{b}
+\begin{umlcall} [op={Result()}, type=return, dt=5] {b}{a}
+\end{umlcall}
+\end{umlcall}
+\end{umlcall}
+
+\begin{umlcall} [op={SMS Note}, type=return, dt=20] {d}{a}
+\end{umlcall}
+
+%%\end{umlfragment}
+
+\end{umlseqdiag}
+\end{tikzpicture}
+
+\newpage
+
+\begin{center}
+清算流程
+\end{center}
+
+\begin{tikzpicture}
+\begin{umlseqdiag}
+\umlactor[class=Customer] {a}
+\umlobject[class=Tongle] {b}
+\umlobject[class=NewEBank]{c}
+%%\umlobject[class= Xingye Bank]{d}
+\begin{umlcall} [op={RecieveNote()}, dt=5] {a}{b}
+\end{umlcall}
+\begin{umlcallself}[op={Liquidate()}] {b}
+\end{umlcallself}
+\begin{umlcall} [op={LiquidationData()}] {b}{c}
+\begin{umlcallself}[op={LiquidationProcess()}] {c}
+\end{umlcallself}
+\begin{umlcall} [type=return] {c}{b}
+\end{umlcall}
+\end{umlcall}
+
+\end{umlseqdiag}
+\end{tikzpicture}
+
+\vspace{60pt}
+
+\begin{center}
+  提现流程
+\end{center}
+
+\begin{tikzpicture}
+\begin{umlseqdiag}
+\umlactor[class=Customer] {a}
+\umlobject[class=Tongle] {b}
+\umlobject[class=NewEBank]{c}
+\umlobject[class= Xingye Bank]{d}
+
+\begin{umlcall} [op={CashbackApply()}, dt=6] {a}{b}
+\begin{umlcall} [op={CashbackCommand()}] {b}{c}
+\begin{umlcall} [op={CashbackProcess()}, return={Return()}] {c}{d}
+\end{umlcall}
+\begin{umlcall} [op={Result()}, type=return] {c}{b}
+\end{umlcall}
+\begin{umlcall} [op={Result()}, type=return] {b}{a}
+\end{umlcall}
+\end{umlcall}
+\end{umlcall}
+\begin{umlcall} [op={SMS Note}, type=return, dt=20] {d}{a}
+\end{umlcall}
+
+\end{umlseqdiag}
+\end{tikzpicture}
+
+
+
+\end{document}}
